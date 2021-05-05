@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  chillapi-test-postgres-db:
+    image: 'postgres:13.1-alpine'
+    container_name: chillapi-test-postgres-db
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker:/docker-entrypoint-initdb.d
+
+  chillapi-test-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_URL=postgresql://root:root@chillapi-test-postgres-db/chillapi
+    container_name: chillapi-test-api
+    working_dir: /app
+    depends_on:
+      - chillapi-test-postgres-db
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    entrypoint: >
+      sh -c "
+        tail -f /dev/null
+      "

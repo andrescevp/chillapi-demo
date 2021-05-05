@@ -1,0 +1,3 @@
+CREATE USER chillapi;
+CREATE DATABASE chillapi;
+GRANT ALL PRIVILEGES ON DATABASE chillapi TO chillapi;
